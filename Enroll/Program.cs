@@ -16,12 +16,12 @@ using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MongoDB
+//  MongoDB подключение
 var mongoDbConnectionString = builder.Configuration["ConnectionStrings:Project20Database"];
 if (string.IsNullOrEmpty(mongoDbConnectionString))
     throw new Exception("MongoDB connection string must be provided in configuration.");
 
-//  JWT
+//  JWT конфигурация
 var jwtSecretKey = builder.Configuration["JwtSecretKey"];
 var jwtIssuer = builder.Configuration["JwtIssuer"];
 var jwtAudience = builder.Configuration["JwtAudience"];
@@ -50,7 +50,6 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtAudience,
         ClockSkew = TimeSpan.Zero
     };
-
     options.Events = new JwtBearerEvents
     {
         OnAuthenticationFailed = context =>
@@ -62,30 +61,34 @@ builder.Services.AddAuthentication(options =>
         {
             Console.WriteLine("[Auth Challenge Triggered]");
             return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            Console.WriteLine("[Auth] Token successfully validated");
+            return Task.CompletedTask;
         }
     };
 });
 
-//  CORS
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
     {
-        policy.WithOrigins("https://delightful-grass-09a0e510f.6.azurestaticapps.net")
+        policy.WithOrigins(builder.Configuration["ClientBaseUrl"]!)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
 
-// Azure Blob Storage
+//  Azure Blob Storage
 builder.Services.AddSingleton(x =>
 {
     var config = x.GetRequiredService<IConfiguration>();
     var connectionString = config["AzureBlobStorage:ConnectionString"];
     if (string.IsNullOrEmpty(connectionString))
         throw new Exception("Azure Blob Storage connection string is missing.");
-
     return new BlobServiceClient(connectionString);
 });
 
@@ -94,16 +97,14 @@ builder.Services.AddSingleton(x =>
     var config = x.GetRequiredService<IConfiguration>();
     var serviceClient = x.GetRequiredService<BlobServiceClient>();
     var containerName = config["AzureBlobStorage:ContainerName"];
-
     if (string.IsNullOrEmpty(containerName))
         throw new Exception("Azure Blob container name is missing.");
-
     var containerClient = serviceClient.GetBlobContainerClient(containerName);
     containerClient.CreateIfNotExists(PublicAccessType.None);
     return containerClient;
 });
 
-//  Инфраструктура и контроллеры
+//  Вся инфраструктура и контроллеры
 builder.Services.AddProjectInfrastructure(builder.Configuration);
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -112,20 +113,18 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddMemoryCache();
 builder.Services.AddEndpointsApiExplorer();
 
-//  Swagger + JWT
+//  Swagger + JWT auth
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Enroll API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Введите JWT токен:",
+        Description = "Введите JWT токен: Bearer {token}",
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -141,20 +140,21 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
+ //Запускаю приложение
 var app = builder.Build();
 
+//  Swagger только в dev
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// 📡 Middleware
+//  Middleware pipeline
 app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");
 
-// 📁 Attachments — поддержка legacy хранилища
+// 📁 Локальные вложения (если есть)
 var attachmentsPath = Path.Combine(Directory.GetCurrentDirectory(), "attachments");
 if (Directory.Exists(attachmentsPath))
 {

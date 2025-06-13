@@ -6,32 +6,43 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+
 namespace Enroll.Services
 {
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly byte[] _key;
+
         public TokenService(IConfiguration configuration)
         {
             _configuration = configuration;
+            _key = Encoding.UTF8.GetBytes(_configuration["JwtSecretKey"]!);
         }
 
         public string GenerateAccessToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["JwtSecretKey"]!);
+
+            var expireMinutes = int.TryParse(_configuration["TestJwt:ExpireMinutes"], out var minutes)
+                ? minutes
+                : 60;
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, user.Name ?? user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Role, user.Role)
-
-            }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Name ?? user.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Role, user.Role)
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(expireMinutes),
+                Issuer = _configuration["JwtIssuer"],
+                Audience = _configuration["JwtAudience"],
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(_key),
+                    SecurityAlgorithms.HmacSha256Signature
+                )
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -50,17 +61,17 @@ namespace Enroll.Services
                 ValidateAudience = false,
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSecretKey"]!)),
-                ValidateLifetime = false, 
-                NameClaimType = ClaimTypes.NameIdentifier,   
-                RoleClaimType = ClaimTypes.Role     
+                IssuerSigningKey = new SymmetricSecurityKey(_key),
+                ValidateLifetime = false,
+                NameClaimType = ClaimTypes.NameIdentifier,
+                RoleClaimType = ClaimTypes.Role
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             try
             {
                 var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-                if (securityToken is not JwtSecurityToken jwtSecurityToken)
+                if (securityToken is not JwtSecurityToken jwtToken)
                     return null;
 
                 return principal;
