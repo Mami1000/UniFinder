@@ -11,6 +11,7 @@ using Enroll.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,10 +21,13 @@ var mongoDbConnectionString = builder.Configuration["ConnectionStrings:Project20
 if (string.IsNullOrEmpty(mongoDbConnectionString))
     throw new Exception("MongoDB connection string must be provided in configuration.");
 
-// JWT
+//  JWT
 var jwtSecretKey = builder.Configuration["JwtSecretKey"];
-if (string.IsNullOrEmpty(jwtSecretKey))
-    throw new Exception("JwtSecretKey must be provided in configuration.");
+var jwtIssuer = builder.Configuration["JwtIssuer"];
+var jwtAudience = builder.Configuration["JwtAudience"];
+
+if (string.IsNullOrEmpty(jwtSecretKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
+    throw new Exception("JwtSecretKey, JwtIssuer, and JwtAudience must be provided in configuration.");
 
 var key = Encoding.UTF8.GetBytes(jwtSecretKey);
 
@@ -40,40 +44,48 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        ValidateIssuer = true,
+        ValidIssuer = jwtIssuer,
+        ValidateAudience = true,
+        ValidAudience = jwtAudience,
         ClockSkew = TimeSpan.Zero
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine($"[Auth Failed] {context.Exception.Message}");
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            Console.WriteLine("[Auth Challenge Triggered]");
+            return Task.CompletedTask;
+        }
     };
 });
 
-// CORS
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowAll", policy =>
-//     {
-//         policy.AllowAnyOrigin()
-//               .AllowAnyMethod()
-//               .AllowAnyHeader();
-//     });
-// });
-
-//для продакшна 
+//  CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
     {
         policy.WithOrigins("https://delightful-grass-09a0e510f.6.azurestaticapps.net")
               .AllowAnyHeader()
-              .AllowAnyMethod();
-              //.AllowCredentials(); 
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
-// BlobStorage: Регистрация клиента
+// Azure Blob Storage
 builder.Services.AddSingleton(x =>
 {
     var config = x.GetRequiredService<IConfiguration>();
     var connectionString = config["AzureBlobStorage:ConnectionString"];
+    if (string.IsNullOrEmpty(connectionString))
+        throw new Exception("Azure Blob Storage connection string is missing.");
+
     return new BlobServiceClient(connectionString);
 });
 
@@ -81,13 +93,17 @@ builder.Services.AddSingleton(x =>
 {
     var config = x.GetRequiredService<IConfiguration>();
     var serviceClient = x.GetRequiredService<BlobServiceClient>();
-    var containerName = config["AzureBlobStorage:attachments"];
+    var containerName = config["AzureBlobStorage:ContainerName"];
+
+    if (string.IsNullOrEmpty(containerName))
+        throw new Exception("Azure Blob container name is missing.");
+
     var containerClient = serviceClient.GetBlobContainerClient(containerName);
     containerClient.CreateIfNotExists(PublicAccessType.None);
     return containerClient;
 });
 
-// Остальная инфраструктура
+//  Инфраструктура и контроллеры
 builder.Services.AddProjectInfrastructure(builder.Configuration);
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -95,7 +111,36 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 builder.Services.AddMemoryCache();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+//  Swagger + JWT
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Введите JWT токен:",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var app = builder.Build();
 
@@ -105,10 +150,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// 📡 Middleware
 app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");
 
-// Static files — если используешь старые attachments (можно убрать позже)
+// 📁 Attachments — поддержка legacy хранилища
 var attachmentsPath = Path.Combine(Directory.GetCurrentDirectory(), "attachments");
 if (Directory.Exists(attachmentsPath))
 {
@@ -125,5 +171,6 @@ else
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
