@@ -11,6 +11,9 @@ import { AuthService } from '../../../services/auth/auth.service/auth.service';
 import { LoaderService } from '../../../services/loader/loader.service';
 import { Observable } from 'rxjs';
 import { PaginationComponent } from '../../paginatoion/pagination.component'; 
+import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
 @Component({
   selector: 'app-test-list',
   standalone: true,
@@ -46,41 +49,47 @@ export class TestListComponent implements OnInit {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private authService: AuthService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private searchSubject: Subject<string> = new Subject<string>()
+    
   ) {}
 
   ngOnInit(): void {
-    this.isLoading$ = this.loaderService.isLoading$; 
+  this.isLoading$ = this.loaderService.isLoading$;
 
-    const role = this.authService.getUserRole();
-    this.isAdmin = role?.toLowerCase() === 'admin';
+  const role = this.authService.getUserRole();
+  this.isAdmin = role?.toLowerCase() === 'admin';
 
-    this.route.queryParams.subscribe(params => {
-      const searchTerm = params['search']?.trim() || '';
-      if (searchTerm) {
-        this.testService.searchTests(searchTerm).subscribe({
-          next: (data: Test[]) => {
-            this.tests = data;
-            this.totalPages = Math.ceil(this.tests.length / this.pageSize);
-            this.updatePagedTests();
-          },
-          error: (err) => {
-            this.error = err.error?.message || 'Ошибка поиска тестов';
-          }
-        });
-      } else {
-        this.loadTests();
-      }
-    });
-
-    this.loadCategories();
-  }
-    changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
+  // оптимизированная подписка
+  this.searchSubject.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap(searchTerm => {
+      if (!searchTerm) return this.testService.getTests();
+      return this.testService.searchTests(searchTerm);
+    })
+  ).subscribe({
+    next: (data: Test[]) => {
+      this.tests = data;
+      this.totalPages = Math.ceil(this.tests.length / this.pageSize);
+      this.currentPage = 1;
       this.updatePagedTests();
+    },
+    error: (err) => {
+      this.error = err.error?.message || 'Ошибка поиска тестов';
     }
-  }
+  });
+
+  // Подписка на queryParams -> передаём в subject
+  this.route.queryParams.pipe(
+    map(params => params['search']?.trim() || '')
+  ).subscribe(search => {
+    this.searchSubject.next(search);
+  });
+
+  this.loadCategories();
+}
+
 
   loadTests(): void {
     this.testService.getTests().subscribe({
@@ -100,8 +109,6 @@ export class TestListComponent implements OnInit {
     const end = start + this.pageSize;
     this.pagedTests = this.tests.slice(start, end);
   }
-
-
 
   loadCategories(): void {
     this.categoryService.getCategories().subscribe({
