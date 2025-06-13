@@ -104,6 +104,13 @@ export class TestListComponent implements OnInit {
     });
   }
 
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagedTests();
+    }
+  }
+
   updatePagedTests(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
@@ -121,6 +128,11 @@ export class TestListComponent implements OnInit {
         console.error('Ошибка загрузки категорий:', err);
       }
     });
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.updatePagedTests();
   }
 
   goToTest(testId: string): void {
