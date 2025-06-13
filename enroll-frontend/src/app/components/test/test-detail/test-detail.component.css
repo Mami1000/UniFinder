@@ -209,8 +209,8 @@ mat-icon {
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+  align-items: flex-start; /* Важно для sticky! */
 }
-
 .left-column {
   flex: 1 1 20rem;
   order: 1;
@@ -228,9 +228,14 @@ mat-icon {
   }
 
   .left-column {
-    order: 2; 
-    margin-top: 1rem;
-  }
+  flex: 1 1 20rem;
+  order: 1;
+  position: sticky;
+  top: 2rem; /* Зазор сверху, можно регулировать */
+  align-self: flex-start;
+  z-index: 1;
+}
+
 
   .center-column {
     order: 1; 
