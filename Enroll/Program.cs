@@ -154,7 +154,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");
 
-// 📁 Локальные вложения (если есть)
+//  Статические файлы для вложений 
 var attachmentsPath = Path.Combine(Directory.GetCurrentDirectory(), "attachments");
 if (Directory.Exists(attachmentsPath))
 {
@@ -164,10 +164,7 @@ if (Directory.Exists(attachmentsPath))
         RequestPath = "/attachments"
     });
 }
-else
-{
-    Console.WriteLine($"[Warning] Attachments folder not found: {attachmentsPath}");
-}
+
 
 app.UseAuthentication();
 app.UseAuthorization();

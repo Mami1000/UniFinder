@@ -20,6 +20,7 @@ namespace Enroll.Services
             _key = Encoding.UTF8.GetBytes(_configuration["JwtSecretKey"]!);
         }
 
+        // Генерация JWT токена для пользователя
         public string GenerateAccessToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -48,12 +49,13 @@ namespace Enroll.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
+        // Генерация рефреш-токена
         public string GenerateRefreshToken()
         {
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
 
+        // Валидация токена, который может быть просрочен
         public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
         {
             var tokenValidationParameters = new TokenValidationParameters
