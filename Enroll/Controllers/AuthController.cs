@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Enroll.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
@@ -68,7 +67,7 @@ namespace Enroll.Controllers
                 return StatusCode(500, new { message = "Ошибка регистрации", details = ex.Message });
             }
         }
-
+        [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
