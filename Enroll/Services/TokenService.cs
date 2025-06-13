@@ -27,7 +27,7 @@ namespace Enroll.Services
 
             var expireMinutes = int.TryParse(_configuration["TestJwt:ExpireMinutes"], out var minutes)
                 ? minutes
-                : 60;
+                : 1;
             Console.WriteLine($"[TokenService] ExpireMinutes: {_configuration["TestJwt:ExpireMinutes"]}");
 
             var tokenDescriptor = new SecurityTokenDescriptor
