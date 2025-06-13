@@ -1,0 +1,92 @@
+<div class="main-container" *ngIf="test;">
+  <div class="layout-columns">
+    
+    <!-- Левая колонка: доска почета -->
+    <div class="left-column">
+      <app-honor-board [honorBoard]="honorBoard"></app-honor-board>
+    </div>
+
+    <!-- Центральная колонка: тестовая часть и ввод кода -->
+    <div class="center-column">
+      <div class="test-detail-container">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ test.name }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+
+            <p class="test-duration">
+              <strong>Время теста:</strong>
+              <ng-container *ngIf="(test.time / 60) < 60; else showInHours">
+                {{ (test.time / 60) | number:'1.0-0' }} мин.
+              </ng-container>
+              <ng-template #showInHours>
+                {{ (test.time / 3600) | number:'1.0-2' }} ч.
+              </ng-template>
+            </p>
+
+            <div class="question-groups" *ngIf="test.questions?.length">
+              <div *ngFor="let q of test.questions" class="question-group">
+                <p><strong>Категория:</strong> {{ q.categoryName || q.categoryId }}</p>
+                <p><strong>Количество вопросов:</strong> {{ q.quantity }}</p>
+              </div>
+            </div>
+
+            <div *ngIf="isAdmin" class="generate-section">
+              <app-code-generation></app-code-generation>
+            </div>
+
+            <div class="enter-code-section">
+              <p><strong>Введите код теста для прохождения:</strong></p>
+              <div class="code-controls">
+                <mat-form-field appearance="outline" class="code-input-field">
+                  <mat-label>Код теста</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="inputCode"
+                    #codeInput="ngModel"
+                    required
+                    (keyup.enter)="takeTestByCode()"
+                    placeholder="Введите код теста"
+                  />
+                  <mat-error *ngIf="codeInput.invalid && (codeInput.touched || codeInput.dirty)">
+                    Поле не должно быть пустым!
+                  </mat-error>
+                </mat-form-field>
+                <button mat-raised-button color="accent" (click)="takeTestByCode()">
+                  Пройти тест
+                </button>
+              </div>
+
+              <div class="info-icon-container">
+                <mat-icon
+                  matTooltip="При повторном прохождении теста, бал не засчитывается. 
+                  Также после перехода на страницу прохождения теста, если вы обновите страницу,
+                  то больше не сможете получить доступ к этому тесту по выданному коду."
+                  aria-label="Информация о тесте">
+                  info
+                </mat-icon>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Кнопка и плавающее окно чата -->
+<!-- Плавающий чат и кнопка -->
+<div class="chat-toggle-wrapper">
+  <!-- Кнопка для открытия/закрытия -->
+  <button mat-fab color="accent" class="chat-toggle-button" (click)="isChatVisible = !isChatVisible">
+    <mat-icon>{{ isChatVisible ? 'close' : 'chat' }}</mat-icon>
+  </button>
+
+  <!-- Контейнер чата -->
+  <div *ngIf="isChatVisible" class="support-container">
+    <app-test-key-chat
+      [testId]="test?.id ?? null"
+      (codeReceived)="onCodeReceived($event)">
+    </app-test-key-chat>
+  </div>
+</div>

@@ -1,0 +1,249 @@
+/* Основной контейнер */
+.category-questions-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #f2f2f2, #ffffff);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок */
+h2 {
+  text-align: center;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+/* Сообщения */
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.error {
+  text-align: center;
+  color: #ff5555;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Сетка карточек */
+.questions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Карточка вопроса */
+.question-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 300px;
+}
+
+.question-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Текст вопроса */
+.question-text {
+  display: block;
+  white-space: normal;
+  word-break: normal;
+  padding: 0;
+  margin-bottom: 10px;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* Список вариантов ответов */
+/* Контейнер для вариантов ответа */
+.options-block {
+  display: block;
+  padding: 10px;
+  background-color: #fcfcfc;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+/* Вариант ответа */
+.answer-option {
+  padding: 8px 10px;
+  margin: 5px 0;
+  background: #f0f0f0;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Эффект при наведении на вариант */
+.answer-option:hover {
+  background-color: #eee;
+}
+
+
+/* Контейнер для изображения */
+.question-image-container img {
+  max-width: 100%;   /* Картинка не будет шире контейнера */
+  max-height: 200px; /* Максимальная высота, можно менять */
+  object-fit: contain; /* Чтобы картинка сохраняла пропорции */
+  display: block;
+  margin: 0 auto;
+  border-radius: 4px; /* По желанию, скругления */
+}
+
+
+/* Стилизация изображений */
+.question-image {
+  max-width: 200px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.question-image:hover {
+  transform: scale(1.05);
+}
+
+/* Если вопросов нет */
+.no-questions {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+.question-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+  background-color: #eee;
+}
+
+.action-btn.edit {
+  color: #007bff;
+}
+
+.action-btn.delete {
+  color: #dc3545;
+}
+
+.question-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.edit-form {
+  background-color: #fafafa;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Стили для лейблов и внутренних элементов */
+.edit-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Поля ввода */
+.edit-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 5px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+/* Предпросмотр изображения */
+.image-preview {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 4px;
+}
+
+/* Кнопки действий */
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-save,
+.btn-cancel {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-save {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background-color: #0056b3;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background-color: #a71d2a;
+}

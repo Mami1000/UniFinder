@@ -1,0 +1,16 @@
+<mat-card>
+    <mat-card-content>
+      <button mat-raised-button color="primary" (click)="generateCode()">
+        <mat-icon>content_copy</mat-icon>
+        Создать ссылку
+      </button>
+      <div *ngIf="generatedLink" class="generated-link">
+        <mat-form-field appearance="outline">
+          <mat-label>Ссылка для теста</mat-label>
+          <input matInput readonly [value]="generatedLink" />
+        </mat-form-field>
+        <button mat-button color="accent" (click)="copyLink()">Скопировать</button>
+        <p *ngIf="copyMessage" class="copy-message">{{ copyMessage }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>

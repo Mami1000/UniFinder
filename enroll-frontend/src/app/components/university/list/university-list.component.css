@@ -1,0 +1,177 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.university-list {
+  list-style: none; 
+  padding: 0;        
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.university-item {
+  list-style: none;
+}
+.university-card {
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.university-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.university-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #f0f0f0;
+  image-rendering: pixelated; /* Для пиксельной графики */
+}
+
+
+.university-info {
+  text-align: center;
+}
+.university-card {
+  transition: box-shadow 0.2s ease;
+}
+.university-card:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.university-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #003366;
+  margin-bottom: 0.4rem;
+}
+
+.university-info p {
+  font-size: 0.9rem;
+  margin: 0.2rem 0;
+  color: #555;
+}
+
+.btn-detail {
+  margin-top: 0.8rem;
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-detail:hover {
+  background-color: #0056b3;
+}
+/* Колличество текста на странице для контейнера */
+.description-truncate {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+  max-height: calc(1.5em * 3); 
+}
+
+
+.university-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* skeleton */
+.logo-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.university-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: #f0f0f0;
+}
+
+.university-logo.loaded {
+  opacity: 1;
+}
+
+.logo-skeleton {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.2s infinite linear;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+/* кнопка добавить универ */
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.btn-create {
+  background-color: #28a745;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-create:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+.btn-create:active {
+  transform: scale(0.98);
+}

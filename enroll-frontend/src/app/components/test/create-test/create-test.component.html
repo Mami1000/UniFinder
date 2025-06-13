@@ -1,0 +1,99 @@
+<div class="create-test-container">
+  <mat-card class="create-test-card">
+    <mat-card-header>
+      <mat-card-title>Создать тест</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="createTestForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" class="create-test-input">
+          <mat-label>Название теста</mat-label>
+          <input matInput formControlName="name" placeholder="Введите название теста" maxlength="20">
+          <mat-error *ngIf="createTestForm.get('name')?.hasError('required')">
+            Название обязательно.
+          </mat-error>
+          <mat-error *ngIf="createTestForm.get('name')?.hasError('maxlength')">
+            Не более 20 символов.
+          </mat-error>
+        </mat-form-field>
+    
+        <mat-form-field appearance="fill" class="create-test-input">
+          <mat-label>Время теста (минуты)</mat-label>
+          <input 
+            matInput 
+            type="text" 
+            formControlName="time" 
+            placeholder="Введите время в минутах" 
+            maxlength="3"
+            pattern="^[0-9]{1,3}$"
+            inputmode="numeric"
+            appOnlyDigits>
+          <mat-hint align="end">От 1 до 240 минут</mat-hint>
+          <mat-error *ngIf="createTestForm.get('time')?.hasError('required')">
+            Время обязательно.
+          </mat-error>
+          <mat-error *ngIf="createTestForm.get('time')?.hasError('min')">
+            Время должно быть не менее 1 минуты.
+          </mat-error>
+          <mat-error *ngIf="createTestForm.get('time')?.hasError('max')">
+            Максимум 240 минут.
+          </mat-error>
+          <mat-error *ngIf="createTestForm.get('time')?.hasError('pattern')">
+            Можно вводить только цифры (до 3 знаков).
+          </mat-error>
+        </mat-form-field>
+        
+    
+        <!-- Список выбранных категорий -->
+        <div formArrayName="questions">
+          <div *ngFor="let category of questions.controls; let i = index" [formGroupName]="i" class="category-row">
+            <mat-form-field appearance="fill" class="category-input">
+              <mat-label>Категория</mat-label>
+              <mat-select formControlName="categoryId" placeholder="Выберите категорию">
+                <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                  {{ cat.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="category.get('categoryId')?.hasError('required')">
+                Выберите категорию.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="category-input">
+              <mat-label>Количество вопросов</mat-label>
+              <input matInput type="number" formControlName="quantity" min="1">
+              <mat-error *ngIf="category.get('quantity')?.hasError('min')">
+                Минимум 1 вопрос.
+              </mat-error>
+            </mat-form-field>
+            <button mat-icon-button color="warn" type="button" (click)="removeCategory(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+    
+        <!-- Кнопка добавления категории недоступна, если уже MAX_CATEGORIES -->
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="button" 
+          class="add-category-button" 
+          (click)="addCategory()"
+          [disabled]="questions.length >= MAX_CATEGORIES">
+          Добавить категорию
+        </button>
+    
+        <!-- Кнопка создания теста включает проверку наличия хотя бы одной категории -->
+        <button 
+          mat-raised-button 
+          color="accent" 
+          type="submit"
+          class="create-test-button"
+          [disabled]="questions.length === 0">
+          Создать тест
+        </button>
+      </form>
+    </mat-card-content>
+    <mat-card-footer *ngIf="message">
+      <p class="message">{{ message }}</p>
+    </mat-card-footer>
+  </mat-card>
+</div>

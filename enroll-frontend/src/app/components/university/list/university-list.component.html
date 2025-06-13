@@ -1,0 +1,52 @@
+<div class="container">
+  <!-- Кнопка администратора -->
+  <div class="header" *ngIf="isAdmin">
+    <button class="btn-create" (click)="goToCreate()">+ Добавить Университет</button>
+  </div>
+  <!-- Список университетов -->
+  <ul class="university-list" *ngIf="!loading && !error && universities.length > 0">
+<li *ngFor="let uni of displayedUniversities; trackBy: trackById" class="university-item">
+  <div class="university-card">
+    
+    <div class="logo-wrapper">
+      <!-- Скелетон -->
+      <div
+        class="logo-skeleton"
+        *ngIf="!loadedLogos[uni.logoUrl]"
+      ></div>
+
+      <!-- Картинка -->
+      <img
+        *ngIf="uni.logoUrl"
+        [src]="getLogoUrl(uni.logoUrl)"
+        [alt]="uni.name"
+        class="university-logo"
+        loading="lazy"
+        (load)="onImageLoad(uni.logoUrl)"
+        [class.loaded]="loadedLogos[uni.logoUrl]"
+      />
+    </div>
+
+    <div class="university-info">
+      <h3>{{ uni.name }}</h3>
+      <p><i class="fa fa-map-marker-alt"></i> {{ uni.location }}</p>
+      <p *ngIf="uni.description" class="description-truncate">
+        {{ uni.description }}
+      </p>
+      <p *ngIf="uni.courses?.length">
+        <strong>Курсы:</strong> {{ uni.courses.join(', ') }}
+      </p>
+      <button class="btn-detail" (click)="viewDetails(uni.id)">Подробнее</button>
+    </div>
+  </div>
+</li>
+
+  </ul>
+
+  <!-- Пагинация -->
+<app-pagination
+  [currentPage]="currentPage"
+  [totalPages]="totalPages"
+  (pageChange)="changePage($event)">
+</app-pagination>
+

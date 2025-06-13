@@ -1,0 +1,203 @@
+/* Скрываем скроллбар */
+::-webkit-scrollbar {
+  display: none;
+}
+
+.test-list-container {
+  padding: 40px 20px 120px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+
+.test-list-container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.test-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.test-card {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border-radius: 12px;
+  padding: 25px 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.test-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.test-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.test-card-header h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #e53935;
+  transition: color 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #c62828;
+}
+
+.test-card p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.test-card p strong {
+  color: #444;
+}
+
+.test-categories p {
+  margin: 4px 0;
+  font-style: italic;
+  color: #555;
+}
+
+.error-message {
+  background: rgba(255, 0, 0, 0.8);
+  padding: 14px 24px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+/* лоадер */
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 40px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Доска почёта для мобилы */
+.honor-board {
+  background: #fff;
+  color: #333;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-top: 30px;
+  font-size: 1.1rem;
+  text-align: center;
+  max-width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .test-list-container {
+    padding-bottom: 80px; /* добавим отступ, чтобы "доска" влезла */
+  }
+
+  .honor-board {
+    position: relative;
+    bottom: 0;
+    margin-top: auto;
+  }
+}
+/* Горящий h2 */
+.test-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.glow-box {
+  display: inline-block;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  position: relative;
+  border: 2px solid transparent;
+  background: #003366;
+  border-radius: 12px;
+  text-transform: uppercase;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* 🔥 Анимация "горящего" квадрата */
+.glow-box::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background: conic-gradient(
+    from 0deg,
+    #ff6f61,
+    #ffcc00,
+    #00e1ff,
+    #ff6f61
+  );
+  animation: spin-border 3s linear infinite;
+  z-index: -1;
+  border-radius: 14px;
+  mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+@keyframes spin-border {
+  0% {
+    transform: rotate(0turn);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}

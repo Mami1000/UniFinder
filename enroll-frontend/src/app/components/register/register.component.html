@@ -1,0 +1,79 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-header>
+      <mat-card-title>Регистрация</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Форма регистрации с данными пользователя и номером телефона (для подтверждения SMS) -->
+      <form *ngIf="!codeSent" [formGroup]="registerForm" (ngSubmit)="sendVerificationCode()">
+        <mat-form-field appearance="fill" class="register-input">
+          <mat-label>Имя</mat-label>
+          <input matInput type="text" formControlName="name">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="register-input">
+          <mat-label>
+            Фамилия <span class="optional-label">(не обязательно)</span>
+          </mat-label>
+          <input matInput type="text" formControlName="surname">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="register-input">
+          <mat-label>Электронная почта</mat-label>
+          <input matInput type="email" formControlName="email">
+        </mat-form-field>
+        <!-- Поле для ввода пароля с переключателем (иконка глаз) -->
+        <mat-form-field appearance="fill" class="register-input">
+          <mat-label>Пароль</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+          <button mat-icon-button 
+                  matSuffix 
+                  (click)="togglePasswordVisibility()" 
+                  [attr.aria-label]="'Show password'" 
+                  [attr.aria-pressed]="!hidePassword" type="button">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <!-- Поле подтверждения пароля с переключателем -->
+        <mat-form-field appearance="fill" class="register-input">
+          <mat-label>Подтверждение пароля</mat-label>
+          <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword">
+          <button mat-icon-button 
+                  matSuffix 
+                  (click)="toggleConfirmPasswordVisibility()" 
+                  [attr.aria-label]="'Show password'" 
+                  [attr.aria-pressed]="!hideConfirmPassword" type="button">
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="register-input">
+          <mat-label>Телефон (с кодом страны, например, +7XXX)</mat-label>
+          <input matInput type="tel" formControlName="phoneNumber">
+        </mat-form-field>
+        <!-- Контейнер для reCAPTCHA -->
+        <div id="recaptcha-container"></div>
+        <button mat-raised-button color="primary" type="submit" class="register-button">
+          Отправить код подтверждения
+        </button>
+      </form>
+      
+      <!-- Форма для ввода кода подтверждения (отправляется после SMS) -->
+      <form *ngIf="codeSent" [formGroup]="codeForm" (ngSubmit)="verifyCode()">
+        <mat-form-field appearance="fill" class="register-input">
+          <mat-label>Код подтверждения</mat-label>
+          <input matInput type="text" formControlName="verificationCode">
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit" class="register-button">
+          Подтвердить код
+        </button>
+      </form>
+      
+      <!-- Ссылка для возврата к форме входа -->
+      <div class="back-to-login" style="text-align: center; margin-top: 16px;">
+        <a (click)="redirectToLogin()" style="cursor: pointer; color: #3f51b5;">Назад ко входу</a>
+      </div>
+      
+    </mat-card-content>
+    <mat-card-footer *ngIf="message">
+      <p class="error-message">{{ message }}</p>
+    </mat-card-footer>
+  </mat-card>
+</div>

@@ -1,0 +1,116 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+  margin: 40px auto;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, #3f51b5, #5a6fb6);
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.chat-history {
+  flex: 1;
+  padding: 15px;
+  background: #f9f9f9;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  margin-bottom: 1em; /* 1em будет соответствовать текущему размеру шрифта */
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+
+.system-msg {
+  align-self: flex-start;
+  background: #e3f2fd;
+  color: #0d47a1;
+  padding: 10px;
+  border-radius: 15px 15px 15px 0;
+}
+
+.user-msg {
+  align-self: flex-end;
+  background: #c8e6c9;
+  color: #1b5e20;
+  padding: 10px;
+  border-radius: 15px 15px 0 15px;
+}
+
+.message-sender {
+  font-weight: bold;
+  margin-bottom: 3px;
+  font-size: 0.85rem;
+}
+
+.message-text {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  /* Обеспечиваем перенос содержимого внутри элемента */
+  overflow-wrap: break-word; /* для современных браузеров */
+  word-wrap: break-word;      /* для совместимости со старыми браузерами */
+  /* Если необходимо, можно добавить: */
+  word-break: break-all;
+  /* При необходимости, можно добавить white-space, если в шаблоне установлен nowrap */
+  white-space: normal;
+}
+
+
+/* Новый стиль для отображения даты/времени */
+.message-timestamp {
+  font-size: 0.75rem;
+  color: #757575;
+  margin-top: 2px;
+  font-style: italic;
+  text-align: right;
+}
+
+.chat-input {
+  display: flex;
+  padding: 15px;
+  background: #fafafa;
+  align-items: center;
+  border-top: 1px solid #eee;
+}
+
+.input-field {
+  flex: 1;
+  margin-right: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-history::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-history::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}

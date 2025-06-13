@@ -1,0 +1,52 @@
+<div class="container">
+  <h2>Создание новой профессии</h2>
+  <form (ngSubmit)="create()" #professionForm="ngForm" class="form">
+
+    <label for="name">Название профессии</label>
+    <input
+      type="text"
+      id="name"
+      [(ngModel)]="name"
+      name="name"
+      required
+    />
+
+    <label for="minScore">Минимальный балл</label>
+    <input
+      type="number"
+      id="minScore"
+      [(ngModel)]="minScore"
+      name="minScore"
+      required
+    />
+
+    <label for="universityId">Университет</label>
+    <select
+    id="universityId"
+    [(ngModel)]="universityId"
+    name="universityId"
+    required
+    >
+    <option value="" disabled selected>Выберите университет</option>
+    <option *ngFor="let uni of universities" [value]="uni.id">{{ uni.name }}</option>
+    </select>
+
+
+    <label for="faculty">Факультет</label>
+    <input
+      type="text"
+      id="faculty"
+      [(ngModel)]="faculty"
+      name="faculty"
+      required
+    />
+
+    <label for="type">Тип обучения</label>
+    <select id="type" [(ngModel)]="type" name="type">
+      <option value="budget">Бюджет</option>
+      <option value="paid">Платное</option>
+    </select>
+
+    <button type="submit">Создать</button>
+  </form>
+</div>

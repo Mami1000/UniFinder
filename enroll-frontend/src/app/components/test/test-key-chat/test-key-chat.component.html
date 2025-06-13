@@ -1,0 +1,32 @@
+<div class="chat-container">
+  <!-- Шапка чата с заголовком -->
+  <div class="chat-header">
+    <h3>Чат с системой</h3>
+  </div>
+  
+  <!-- Область истории сообщений -->
+  <div class="chat-history" #chatHistory>
+    <div
+      *ngFor="let msg of messages"
+      #chatMessage
+      class="chat-message"
+      [ngClass]="{'system-msg': msg.sender === 'Система', 'user-msg': msg.sender !== 'Система'}">
+      
+      <div class="message-sender">{{ msg.sender }}</div>
+      <div class="message-text">{{ msg.text }}</div>
+      <!-- Вывод даты/времени сообщения с форматом "день месяц год, часы:минуты" -->
+      <div class="message-timestamp">{{ msg.timestamp | date:'dd MMMM yyyy, HH:mm' }}</div>
+    </div>
+  </div>
+  
+  <!-- Область ввода сообщений -->
+  <div class="chat-input">
+    <mat-form-field appearance="outline" class="input-field">
+      <input maxlength="30" matInput 
+             placeholder="Введите сообщение..." 
+             [(ngModel)]="userInput" 
+             (keyup.enter)="sendRequest()" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="sendRequest()">Отправить</button>
+  </div>
+</div>

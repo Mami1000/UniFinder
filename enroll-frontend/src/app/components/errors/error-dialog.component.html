@@ -1,0 +1,10 @@
+<h2 mat-dialog-title class="error-title">
+    <mat-icon color="warn">error_outline</mat-icon>
+    Ошибка
+  </h2>
+  <mat-dialog-content>
+    <p>{{ data.message }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button color="primary" (click)="dialogRef.close()">Закрыть</button>
+  </mat-dialog-actions>

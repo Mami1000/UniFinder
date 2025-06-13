@@ -1,0 +1,43 @@
+<div class="container">
+  <h2>📥 Массовая загрузка профессий</h2>
+
+  <label class="upload-label">
+    <input type="file" accept=".json" (change)="onFileSelected($event)" />
+    <span>Выберите JSON-файл</span>
+  </label>
+
+  <div *ngIf="professions.length > 0">
+    <h3>👀 Предпросмотр:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>Мин. балл</th>
+          <th>Университет</th>
+          <th>Факультет</th>
+          <th>Тип</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prof of professions">
+          <td>{{ prof.name }}</td>
+          <td>{{ prof.minScore }}</td>
+          <td>{{ getUniversityName(prof.universityId) }}</td>
+          <td>{{ prof.faculty }}</td>
+          <td>{{ prof.type }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button (click)="upload()" [disabled]="uploadSuccess" class="upload-btn">
+      🚀 Загрузить на сервер
+    </button>
+
+    <button *ngIf="uploadSuccess" (click)="resetUpload()" class="upload-btn secondary">
+      🔄 Загрузить снова
+    </button>
+  </div>
+
+  <div *ngIf="uploadError" class="error-message">❌ {{ uploadError }}</div>
+  <div *ngIf="showToast" class="toast">✅ Профессии успешно загружены!</div>
+</div>

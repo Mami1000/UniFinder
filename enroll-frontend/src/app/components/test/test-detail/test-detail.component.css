@@ -1,0 +1,238 @@
+/* Базовые сбросы */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Контейнеры */
+.main-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem;
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 1920px) {
+  .main-container {
+    margin: 0 auto;
+    max-width: 1900px;
+  }
+}
+
+.test-detail-container {
+  max-width: 37.5rem;
+  width: 100%;
+}
+
+/* Карточки */
+mat-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease-out;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+}
+
+mat-card-header {
+  background: linear-gradient(135deg, #3f51b5, #5a6fb6);
+  color: #fff;
+  padding: 1rem;
+}
+
+mat-card-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+mat-card-content {
+  padding: 1.25rem;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+mat-card-content p {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Разделы */
+.test-duration {
+  font-size: 1rem;
+  margin-bottom: 0.9375rem;
+}
+
+.question-groups {
+  margin-top: 1.25rem;
+}
+
+.question-group {
+  background-color: #fafafa;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.question-group:hover {
+  background-color: #f0f0f0;
+}
+
+.generate-section,
+.enter-code-section {
+  margin-top: 1.5625rem;
+}
+
+.code-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.9375rem;
+  margin-top: 0.625rem;
+}
+
+.code-input-field {
+  flex: 1;
+}
+
+button[mat-raised-button] {
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Ошибки */
+.error-message {
+  color: #d32f2f;
+  font-size: 1.125rem;
+  text-align: center;
+  margin-top: 1.25rem;
+}
+
+::ng-deep .error-snackbar {
+  background-color: rgba(211, 47, 47, 0.9);
+  color: #ffffff;
+  border: 1px solid #b71c1c;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  text-align: center;
+  z-index: 10000;
+}
+
+/* Иконка */
+.info-icon-container {
+  margin-top: 0.625rem;
+  display: flex;
+  align-items: center;
+}
+
+mat-icon {
+  cursor: pointer;
+  color: #3f51b5;
+}
+
+/* === 🔹 Плавающий ЧАТ === */
+.support-container {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  width: 22rem;
+  max-width: min(90vw, 22rem);
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.chat-toggle-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1001;
+  background: linear-gradient(135deg, #818ed4, #6774b4); /* Новый градиент */
+  color: #ffffff;
+  border-radius: 50%;
+  padding: 0.75rem;
+  font-size: 1.25rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Более выразительная тень */
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s;
+}
+.chat-toggle-button:hover {
+  background: linear-gradient(135deg, #9aa8f5, #8a94ce); /* Светлее при наведении */
+  transform: scale(1.05);
+}
+
+.chat-toggle-button:active {
+  transform: scale(0.95);
+}
+/* На мобильных уменьшаем чат */
+@media screen and (max-width: 1280px) {
+  .support-container {
+    transform: scale(0.85);
+    transform-origin: bottom right;
+    bottom: 5rem;
+  }
+  .test-detail-container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+.layout-columns {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.left-column {
+  flex: 1 1 20rem;
+  order: 1;
+}
+
+.center-column {
+  flex: 2 1 40rem;
+  order: 0;
+}
+
+/* Для мобильных экранов */
+@media screen and (max-width: 768px) {
+  .layout-columns {
+    flex-direction: column;
+  }
+
+  .left-column {
+    order: 2; 
+    margin-top: 1rem;
+  }
+
+  .center-column {
+    order: 1; 
+  }
+}

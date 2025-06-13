@@ -1,0 +1,52 @@
+<div class="bulk-question-create-container">
+    <h2>
+      Массовое добавление вопросов для категории: {{ categoryName || categoryId }}
+    </h2>
+  
+    <form [formGroup]="bulkForm" (ngSubmit)="onBulkSubmit()">
+      <div class="form-group">
+        <label for="jsonInput">
+          Вставьте JSON с вопросами (пример структуры):
+        </label>
+        <textarea id="jsonInput"
+                  formControlName="jsonInput"
+                  rows="10"
+                  placeholder='{
+    "questions": [
+      {
+        "question": "Что делает оператор === в JavaScript?",
+        "a": "Сравнивает значения без учета типа",
+        "b": "Сравнивает только типы данных",
+        "c": "Сравнивает значения с учетом типа",
+        "d": "Преобразует значения",
+        "correct": "c",
+        "imageUrl": "https://example.com/image.jpg"
+      },
+      {
+        "question": "Какой метод используется для добавления элемента в конец массива в JavaScript?",
+        "a": "pop()",
+        "b": "push()",
+        "c": "shift()",
+        "d": "unshift()",
+        "correct": "b",
+        "imageUrl": "https://example.com/image.jpg"
+      }
+    ]
+  }'
+                  class="full-width"></textarea>
+      </div>
+  
+      <div class="form-group">
+        <label for="point">Баллы за вопрос (применяются ко всем):</label>
+        <input id="point" type="number" formControlName="point" min="0" />
+      </div>
+  
+      <div *ngIf="error" class="error-message">{{ error }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  
+      <div class="button-container">
+        <button type="submit">Добавить вопросы</button>
+      </div>
+    </form>
+  </div>
+  

@@ -1,0 +1,84 @@
+<div class="detail-page" *ngIf="university;">
+
+  <!-- Верхний баннер с затемнением -->
+  <div
+    class="banner"
+    [ngStyle]="{
+      'background-image': updatedUniversity.logoUrl
+        ? 'url(' + getLogoUrl(updatedUniversity.logoUrl) + ')'
+        : university.logoUrl
+          ? 'url(' + getLogoUrl(university.logoUrl) + ')'
+          : 'url(assets/default-banner.jpg)'
+    }"
+  >
+    <div class="overlay">
+      <h1 *ngIf="!editMode">{{ university.name }}</h1>
+      <input *ngIf="editMode && isAdmin" type="text" [(ngModel)]="updatedUniversity.name" placeholder="Название университета" />
+      
+      <p class="location">
+        <i class="fa fa-map-marker-alt"></i>
+        <span *ngIf="!editMode">{{ university.location }}</span>
+        <input *ngIf="editMode && isAdmin" type="text" [(ngModel)]="updatedUniversity.location" placeholder="Местоположение" />
+      </p>
+    </div>
+
+    <!-- Плавающий логотип -->
+    <div class="logo-badge">
+      <img
+        *ngIf="updatedUniversity.logoUrl"
+        [src]="getLogoUrl(updatedUniversity.logoUrl)"
+        [alt]="university.name"
+      />
+    </div>
+  </div>
+
+  <!-- Контент -->
+  <div class="content">
+
+    <!-- Описание -->
+    <section class="description">
+      <h2>О университете</h2>
+      <p *ngIf="!editMode">{{ university.description }}</p>
+      <textarea
+        *ngIf="editMode && isAdmin"
+        [(ngModel)]="updatedUniversity.description"
+        rows="5"
+        placeholder="Описание университета"
+      ></textarea>
+    </section>
+
+    <!-- Курсы -->
+    <section class="courses">
+      <h2>Курсы</h2>
+      <ul *ngIf="!editMode">
+        <li *ngFor="let course of university.courses">{{ course }}</li>
+      </ul>
+      <div *ngIf="editMode && isAdmin">
+        <div *ngFor="let course of updatedUniversity.courses; let i = index">
+          <input type="text" [(ngModel)]="updatedUniversity.courses[i]" placeholder="Название курса" />
+          <button (click)="updatedUniversity.courses.splice(i, 1)">Удалить</button>
+        </div>
+        <button (click)="updatedUniversity.courses.push('')">➕ Добавить курс</button>
+      </div>
+    </section>
+
+    <!-- Загрузка логотипа -->
+    <section *ngIf="editMode && isAdmin" class="upload-section">
+      <label for="logo-upload">Загрузить логотип:</label>
+      <input type="file" id="logo-upload" (change)="onLogoSelected($event)" />
+    </section>
+
+    <!-- Кнопки управления -->
+    <div class="button-wrapper">
+      <button class="back-btn" (click)="goBack()">← Назад к списку</button>
+      
+      <button *ngIf="!editMode && isAdmin" class="edit-btn" (click)="enableEdit()">✏️ Редактировать</button>
+      
+      <div *ngIf="editMode && isAdmin">
+        <button class="save-btn" (click)="saveChanges()">💾 Сохранить</button>
+        <button class="cancel-btn" (click)="editMode = false">❌ Отмена</button>
+      </div>
+    </div>
+
+  </div>
+</div>

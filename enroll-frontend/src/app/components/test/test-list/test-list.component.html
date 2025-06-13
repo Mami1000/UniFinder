@@ -1,0 +1,48 @@
+<div class="test-list-container">
+
+  <h2 class="test-title">
+  <span class="glow-box">Тесты</span>
+</h2>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Список тестов -->
+  <div class="test-cards" *ngIf="pagedTests.length > 0;">
+    <div class="test-card" *ngFor="let test of pagedTests" (click)="goToTest(test.id)">
+      <div class="test-card-header">
+        <h3>{{ test.name }}</h3>
+
+        <button *ngIf="isAdmin"
+                class="delete-btn"
+                mat-icon-button
+                matTooltip="Удалить тест"
+                (click)="deleteTest(test, $event)">
+          <mat-icon color="warn">delete</mat-icon>
+        </button>
+      </div>
+
+      <p>
+        <strong>Время прохождения:</strong>
+        <ng-container *ngIf="(test.time / 60) < 60; else showInHours">
+          {{ (test.time / 60) | number:'1.0-0' }} мин.
+        </ng-container>
+        <ng-template #showInHours>
+          {{ (test.time / 3600) | number:'1.0-2' }} ч.
+        </ng-template>
+      </p>
+
+      <div class="test-categories">
+        <p>Категория:</p>
+        <p *ngFor="let category of getUniqueCategories(test)">{{ category }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Пагинация -->
+<app-pagination
+  [currentPage]="currentPage"
+  [totalPages]="totalPages"
+  (pageChange)="changePage($event)">
+</app-pagination>

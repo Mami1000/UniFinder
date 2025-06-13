@@ -1,0 +1,30 @@
+<div class="container">
+
+  <table *ngIf="!isLoading && pagedProfessions.length > 0" class="table">
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Минимальный балл</th>
+        <th>Университет</th>
+        <th>Факультет</th>
+        <th>Тип</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of pagedProfessions">
+        <td data-label="Название">{{ p.name }}</td>
+        <td data-label="Минимальный балл">{{ p.minScore }}</td>
+        <td>{{ getUniversityName(p.universityId) }}</td>
+        <td data-label="Факультет">{{ p.faculty }}</td>
+        <td data-label="Тип">{{ p.type === 'budget' ? 'Бюджет' : 'Платное' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Пагинация -->
+<app-pagination
+  [currentPage]="currentPage"
+  [totalPages]="totalPages"
+  (pageChange)="changePage($event)">
+</app-pagination>
+

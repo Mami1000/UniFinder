@@ -1,0 +1,32 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Высота всего окна */
+  }
+  
+ .app-content {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+  body .goog-te-banner-frame.skiptranslate {
+    display: none !important;
+  }
+  
+  body {
+    top: 0px !important;
+  }
+  
+  .goog-te-banner-frame {
+    height: 0 !important;
+    visibility: hidden !important;
+    display: none !important;
+  }
+  

@@ -1,0 +1,83 @@
+<div *ngIf="questionForm; else noForm" class="question-create-container">
+  <h2>Создать вопрос для категории: {{ categoryName || categoryId }}</h2>
+  
+  <!-- Иконка подсказки с примером формата -->
+  <div class="format-hint">
+    <mat-icon 
+      matTooltip="Пример формата: 
+Что делает оператор === в JavaScript? 
+a) Сравнивает значения без учета типа 
+b) Сравнивает только типы данных 
+c) Сравнивает значения с учетом типа 
+d) Преобразует значения" 
+      aria-label="Пример формата">
+      info
+    </mat-icon>
+    <span class="hint-text">Формат вопроса (наведите чтобы увидеть пример)</span>
+  </div>
+  
+  <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+    
+    <!-- Изменения только для поля "Текст вопроса" -->
+    <div>
+      <label for="text">Текст вопроса</label>
+      <mat-form-field appearance="outline" class="full-width">
+        <textarea matInput
+                  id="text" 
+                  formControlName="text" 
+                  required
+                  placeholder="Введите текст вопроса (максимум 500 символов)"
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="3"
+                  cdkAutosizeMaxRows="7"
+                  maxlength="500"></textarea>
+        <mat-hint align="end">{{ questionForm.get('text')?.value?.length || 0 }} / 500</mat-hint>
+        <mat-error *ngIf="questionForm.get('text')?.hasError('invalidFormat')">
+          Формат вопроса должен соответствовать примеру!
+        </mat-error>
+        <mat-error *ngIf="questionForm.get('text')?.hasError('maxlength')">
+          Максимальная длина вопроса — 500 символов!
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <!-- Остальные поля без изменений -->
+    <div>
+      <label for="answer">Правильный ответ</label>
+      <input
+        id="answer"
+        formControlName="answer"
+        required
+        maxlength="1"
+        pattern="[abcdABCD]"
+        placeholder="Введите один символ: a, b, c или d"
+        appOnlyAnswerChars
+      />
+      <div *ngIf="questionForm.get('answer')?.hasError('invalidAnswer')" class="error-message">
+        Правильный ответ должен быть одной латинской буквой: a, b, c или d!
+      </div>
+    </div>
+    <div>
+      <label for="note">Примечание</label>
+      <input id="note" formControlName="note" placeholder="Дополнительная информация (не обязательно)" />
+    </div>
+
+    <div>
+      <label for="point">Бал за вопрос</label>
+      <input id="point" formControlName="point" type="number" placeholder="Введите баллы (не менее 0)" />
+    </div>
+    <div>
+    <label for="image">Выберите изображение (необязательно):</label>
+    <input type="file" id="image" (change)="onFileSelected($event)">
+  </div>
+    <input type="hidden" formControlName="categoryId" />
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <div class="button-container">
+      <button type="submit">Создать вопрос</button>
+    </div>
+  </form>
+</div>
+
+<ng-template #noForm>
+  <p class="error-message">{{ error }}</p>
+</ng-template>

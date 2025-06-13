@@ -1,0 +1,9 @@
+error-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #c62828;
+  }
+  mat-dialog-content p {
+    font-size: 16px;
+  }

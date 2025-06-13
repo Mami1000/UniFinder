@@ -1,0 +1,220 @@
+.detail-page {
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.overlay h1 {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.overlay .location {
+  font-size: 1.1rem;
+  color: #d0e6ff;
+}
+
+.logo-badge {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.content {
+  max-width: 800px;
+  margin: 80px auto 30px auto;
+  padding: 2rem;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.content h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: #003366;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+
+.content p {
+  font-size: 1.05rem;
+  color: #444;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.courses ul {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+  color: #444;
+}
+
+.courses li {
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+}
+
+.back-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 2rem;
+}
+
+.back-btn:hover {
+  background-color: #0056b3;
+}
+/*  Стили для input и textarea в режиме редактирования */
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  outline: none;
+}
+
+/*  Кнопки редактирования */
+.edit-btn,
+.save-btn,
+.cancel-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin: 0.5rem 0.5rem 0 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background-color: #e0a800;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333;
+}
+
+/* Секция загрузки логотипа */
+.upload-section {
+  margin-top: 1rem;
+}
+
+.upload-section label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #003366;
+}
+
+.upload-section input[type="file"] {
+  display: block;
+}
+
+/*  Стили для курсов */
+.courses input[type="text"] {
+  margin-bottom: 0.3rem;
+  width: calc(100% - 90px);
+  display: inline-block;
+}
+
+.courses button {
+  margin-left: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.courses button:hover {
+  background-color: #c82333;
+}
+
+.courses .add-course-btn {
+  margin-top: 0.7rem;
+  background-color: #17a2b8;
+  color: white;
+}
+
+.courses .add-course-btn:hover {
+  background-color: #138496;
+}

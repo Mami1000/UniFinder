@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+// Подключаем базовые стили Angular Material:
+@include mat.core();
+
+// Определите ваши цветовые палитры.
+// Здесь в качестве примера используем существующие палитры из Angular Material.
+// Замените их на свои, если необходимо.
+$azure-palette: mat.define-palette(mat.$indigo-palette);
+$blue-palette: mat.define-palette(mat.$blue-palette);
+
+// (Опционально) Если нужна настройка типографики, можно определить её так:
+$custom-typography: mat.define-typography-config();
+
+// Определяем легкую тему:
+$custom-theme: mat.define-light-theme((
+  color: (
+    primary: $azure-palette,
+    accent: $blue-palette
+  ),
+  typography: $custom-typography,
+  density: 0
+));
+
+// Применяем тему ко всем компонентам Material:
+@include mat.all-component-themes($custom-theme);

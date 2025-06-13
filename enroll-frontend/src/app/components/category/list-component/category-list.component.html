@@ -1,0 +1,28 @@
+<div class="container">
+  
+  <div *ngIf="loading" class="loading">Загрузка...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && pagedCategories.length; else noCategories">
+    <div class="card" *ngFor="let cat of pagedCategories">
+      <div class="card-body">
+        <h3 class="card-title">{{ cat.name }}</h3>
+        <div class="card-actions">
+          <button class="btn" (click)="viewQuestions(cat.id)">Посмотреть вопросы</button>
+          <button *ngIf="isAdmin" class="btn btn-primary" (click)="createQuestion(cat.id)">Создать вопрос</button>
+          <button *ngIf="isAdmin" class="btn btn-secondary" (click)="createBulkQuestion(cat.id)">Массовое добавление вопросов</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button class="btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Назад</button>
+      <span>Страница {{ currentPage }} из {{ totalPages }}</span>
+      <button class="btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Вперёд</button>
+    </div>
+  </div>
+
+  <ng-template #noCategories>
+    <div class="no-categories">Нет категорий для отображения</div>
+  </ng-template>
+</div>

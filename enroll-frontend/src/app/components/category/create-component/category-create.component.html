@@ -1,0 +1,25 @@
+<div class="center-container">
+  <mat-card class="category-card">
+    <mat-card-title>Создать категорию</mat-card-title>
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="full-width">
+        <mat-label>Название</mat-label>
+        <input matInput id="name" formControlName="name" required />
+        <mat-error *ngIf="categoryForm.get('name')?.invalid">Введите название</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field class="full-width">
+        <mat-label>Описание</mat-label>
+        <input matInput id="description" formControlName="description" />
+      </mat-form-field>
+  
+      <div *ngIf="error" class="error-message">
+        <mat-icon>error</mat-icon> {{ error }}
+      </div>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="categoryForm.invalid">
+        <mat-icon>add</mat-icon> Создать категорию
+      </button>
+    </form>
+  </mat-card>
+</div>

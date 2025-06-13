@@ -1,0 +1,65 @@
+.profile-form-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-section {
+  margin-bottom: 20px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.avatar-wrapper img,
+.avatar-wrapper .default-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.avatar-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-actions {
+  width: 100%;
+  text-align: right;
+}
+
+.notification {
+  text-align: center;
+  color: #27ae60;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+/* Стили для диалога можно добавить в global styles или через panelClass/backdropClass */
+.full-photo-dialog-panel {
+  background: transparent;
+  box-shadow: none;
+}
+
+.full-photo-backdrop {
+  background: rgba(0,0,0,0.8);
+}

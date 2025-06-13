@@ -1,0 +1,125 @@
+<ng-container *ngIf="test; else loadingOrError">
+  <div class="open-test-container">
+    <div #scrollTopAnchor></div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ test.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="timer">
+          <strong>Оставшееся время:</strong> {{ formatTime(timeLeft) }}
+        </p>
+        <p *ngIf="showWarning" class="warning-message">
+          ⚠️ Осталась всего одна минута до конца!
+        </p>
+
+        <!-- Вопросы -->
+        <div class="question-card"
+             *ngFor="let question of paginatedQuestions; let i = index; trackBy: trackByIndex">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>
+                Вопрос {{ ((currentPage - 1) * pageSize) + i + 1 }}
+              </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+              <ng-container *ngIf="getParsedQuestion(question) as parsed">
+                <p class="question-text">{{ parsed.questionText }}</p>
+
+                <div *ngIf="question.imageUrl" class="question-image-container">
+                  <img loading="lazy" [src]="question.imageUrl" alt="Изображение вопроса" class="question-image" />
+                </div>
+
+                <mat-radio-group
+                  class="options-group"
+                  [(ngModel)]="answers[((currentPage - 1) * pageSize) + i]"
+                  [disabled]="isFinished"
+                  name="question{{ ((currentPage - 1) * pageSize) + i }}">
+
+                  <div class="options-container" *ngIf="parsed.options.length > 0; else defaultOptions">
+                    <mat-radio-button *ngFor="let option of parsed.options" [value]="option.letter" class="option-button">
+                      <span class="custom-radio-label">
+                        ({{ option.letter }}) {{ option.text }}
+                      </span>
+                    </mat-radio-button>
+                  </div>
+                </mat-radio-group>
+
+                <ng-template #defaultOptions>
+                  <div class="options-container">
+                    <mat-radio-button *ngFor="let option of ['a','b','c','d']" [value]="option" class="option-button">
+                      <span class="custom-radio-label">({{ option }})</span>
+                    </mat-radio-button>
+                  </div>
+                </ng-template>
+              </ng-container>
+
+              <div *ngIf="isFinished" class="result-container">
+                <div class="result-square"
+                     [ngClass]="{
+                       'correct': isAnswerCorrect(((currentPage - 1) * pageSize) + i, question),
+                       'incorrect': !isAnswerCorrect(((currentPage - 1) * pageSize) + i, question)
+                     }">
+                </div>
+                <span class="correct-answer">
+                  Правильный ответ: <strong>{{ question.answer }}</strong>
+                </span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Пагинация -->
+        <div class="pagination-controls" *ngIf="totalPages > 1">
+          <button mat-button (click)="previousPage()" [disabled]="currentPage === 1">Предыдущая</button>
+          <span>Страница {{ currentPage }} из {{ totalPages }}</span>
+          <button mat-button (click)="nextPage()" [disabled]="currentPage === totalPages || !allCurrentPageAnswered()">
+            Следующая
+          </button>
+        </div>
+
+        <!-- Действия -->
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" (click)="confirmFinishTest()" [disabled]="isFinished || !allQuestionsAnswered()">
+            Завершить тест
+          </button>
+          <button *ngIf="isFinished" mat-raised-button color="accent" (click)="openResultModal()">
+            Просмотреть результат
+          </button>
+        </div>
+
+        <!-- Ошибка завершения -->
+        <mat-card *ngIf="finishError" class="error-card">
+          <mat-card-content class="error-content">
+            <mat-icon color="warn">error_outline</mat-icon>
+            <span>{{ finishError }}</span>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="accent" (click)="finishTest()">Повторить попытку</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-container>
+
+<ng-template #loadingOrError>
+
+  <ng-template #loadingTemplate>
+    <p>Загрузка теста...</p>
+  </ng-template>
+</ng-template>
+
+<!-- Модальное окно -->
+<div class="modal-overlay" *ngIf="isFinished && showResultModal">
+  <app-test-result
+    [resultData]="testResultData"
+    [emailSent]="emailSent"
+    [recommendations]="recommendations"
+    [closestProfession]="closestProfession"
+    [neededPoints]="neededPoints"
+    (sendEmailEvent)="sendResultEmail(testResultData?.score ?? 0)"
+    (closeEvent)="closeResultWindow()">
+  </app-test-result>
+</div>

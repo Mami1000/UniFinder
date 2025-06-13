@@ -1,0 +1,69 @@
+<div class="create-university-container">
+  <div class="card">
+    <h1>Добавить Университет</h1>
+    <form [formGroup]="universityForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Название университета</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Введите название университета"
+        />
+      </div>
+      <div class="form-group">
+        <label for="location">Местоположение</label>
+        <input
+          id="location"
+          type="text"
+          formControlName="location"
+          placeholder="Введите местоположение"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Описание</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="4"
+          placeholder="Введите описание университета"
+        ></textarea>
+      </div>
+      <!-- Загрузка логотипа -->
+      <div class="form-group file-input-group">
+        <label for="logoFile" class="file-input-label">
+          Логотип университета (только изображение)
+        </label>
+        <input
+          id="logoFile"
+          type="file"
+          (change)="onLogoFileChange($event)"
+          accept="image/*"
+        />
+        <div *ngIf="logoPreviewUrl" class="logo-preview">
+          <img [src]="logoPreviewUrl" alt="Предпросмотр логотипа" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Курсы</label>
+        <div formArrayName="courses" class="course-list">
+          <div *ngFor="let courseControl of courses.controls; index as i" class="course-item">
+            <input [formControlName]="i" type="text" placeholder="Введите курс" />
+            <button type="button" (click)="removeCourse(i)" class="remove-course-btn">
+              Удалить
+            </button>
+          </div>
+        </div>
+        <div class="course-add">
+          <input #courseInput type="text" placeholder="Введите курс" />
+          <button type="button" (click)="addCourse(courseInput.value); courseInput.value = ''" class="add-course-btn">
+            Добавить курс
+          </button>
+        </div>
+      </div>
+      <button type="submit" [disabled]="universityForm.invalid || !selectedLogoFile" class="submit-btn">
+        Создать Университет
+      </button>
+    </form>
+  </div>
+</div>

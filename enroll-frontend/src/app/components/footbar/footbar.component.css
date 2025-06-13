@@ -1,0 +1,87 @@
+.footbar {
+  background-color: #f8f9fa;
+  padding: 20px;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+/* Контейнер футера для широких экранов */
+.footbar .container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Секции футера */
+.footbar .section {
+  flex: 1 1 200px;
+  margin: 10px;
+}
+
+/* Заголовок секции */
+.footbar h3 {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+/* Стили для списков */
+.footbar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footbar ul li {
+  margin-bottom: 5px;
+  word-break: break-word;
+}
+
+/* Стили для ссылок */
+.footbar a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footbar a:hover {
+  text-decoration: underline;
+}
+
+/* Блок социальных сетей */
+.social-media {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  .footbar {
+    padding: 15px;
+  }
+
+  /* Располагаем секции по вертикали */
+  .footbar .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .footbar .section {
+    flex: none;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  /* Немного увеличиваем размеры заголовков для акцента на мобильных */
+  .footbar h3 {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+
+  /* Подгоняем размеры текста элементов списка */
+  .footbar ul li {
+    font-size: 0.95em;
+    margin-bottom: 4px;
+  }
+}

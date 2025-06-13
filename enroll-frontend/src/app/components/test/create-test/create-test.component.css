@@ -1,0 +1,40 @@
+.create-test-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .create-test-card {
+    width: 600px;
+    padding: 16px;
+  }
+  
+  .create-test-input {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .question-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .question-input {
+    flex: 1;
+  }
+  
+  .add-question-button,
+  .create-test-button {
+    width: 100%;
+    margin-top: 16px;
+  }
+  
+  .message {
+    text-align: center;
+    margin-top: 8px;
+    color: green;
+  }
+  

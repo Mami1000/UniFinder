@@ -1,0 +1,171 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 90%;
+  max-height: 90vh;     /* ограничиваем максимальную высоту модального окна */
+  overflow-y: auto;     /* включаем вертикальную прокрутку при необходимости */
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  animation: scaleIn 0.4s ease-out;
+  -webkit-overflow-scrolling: touch; /* для плавного скролла на мобильных устройствах */
+}
+
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 42px;
+  height: 42px;
+  background: #f44336;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s, transform 0.3s;
+  z-index: 1001;
+}
+
+  .modal-close-button:hover {
+    background: #d32f2f;
+    transform: scale(1.1);
+  }
+  
+  .result-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .result-header {
+    background: linear-gradient(135deg, #3f51b5, #303f9f);
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  .result-header .result-icon {
+    font-size: 36px;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  .result-header .result-title {
+    display: inline;
+    font-size: 24px;
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  .result-details {
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #424242;
+  }
+  .result-summary {
+    margin: 0;
+    margin-bottom: 12px;
+  }
+  
+  /* Разбивка по категориям: каждая категория на новой строке и выровнена по центру */
+  .category-results {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 14px;
+    color: #424242;
+  }
+  .category-item {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .modal-actions {
+    padding: 16px;
+    text-align: center;
+    border-top: 1px solid #eee;
+  }
+  
+  .send-email-button {
+    background-color: #3f51b5;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .send-email-button:hover:enabled {
+    background-color: #303f9f;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+  .send-email-button:disabled {
+    background-color: #9fa8da;
+    cursor: default;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  @media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    padding: 1rem;
+    max-width: none;
+  }
+
+  .result-header .result-title {
+    font-size: 20px;
+  }
+
+  .send-email-button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .result-details {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .category-results {
+    font-size: 13px;
+  }
+
+  .modal-close-button {
+    top: -10px;
+    right: -10px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+  }
+}

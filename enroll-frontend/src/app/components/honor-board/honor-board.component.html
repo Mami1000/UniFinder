@@ -1,0 +1,16 @@
+    <div class="left-column">
+      <div class="honor-board-container" *ngIf="honorBoard.length">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>🏆 Доска почёта</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ol class="honor-list">
+              <li *ngFor="let entry of honorBoard; index as i" class="honor-entry">
+                <strong>{{ entry.userName }}</strong> — {{ entry.score }} баллов 
+              </li>
+            </ol>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>

@@ -1,0 +1,82 @@
+<nav class="nav-bar">
+  <div class="nav-container">
+
+    <!-- Логотип всегда слева -->
+    <div class="logo-container">
+      <span class="brand" (click)="navigateHome()">
+      <img src="https://unifinderattachments.blob.core.windows.net/attachments/logo.png" alt="Логотип" class="logo" />
+      </span>
+    </div>
+
+    <!-- Поисковик -->
+    <div class="search-wrapper" *ngIf="isLoggedIn">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Найти тест..."
+        [formControl]="searchControl"
+      />
+      <button class="search-btn" type="button" (click)="manualSearch()">
+        <span class="material-icons">search</span>
+      </button>
+    </div>
+    <!-- Навигация / Контролы -->
+    <div class="nav-links">
+      <ng-container *ngIf="!isLoggedIn">
+        <button class="theme-toggle-button" (click)="toggleDarkMode()">
+          <ng-container *ngIf="darkMode; else lightMode">
+            <span class="material-icons" title="Светлая тема">light_mode</span>
+          </ng-container>
+          <ng-template #lightMode>
+            <span class="material-icons" title="Ночная тема">dark_mode</span>
+          </ng-template>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+        <div class="user-menu">
+          <div class="user-controls">
+            <button class="theme-toggle-button" (click)="toggleDarkMode()">
+              <ng-container *ngIf="darkMode; else lightModeUser">
+                <span class="material-icons" title="Светлая тема">light_mode</span>
+              </ng-container>
+              <ng-template #lightModeUser>
+                <span class="material-icons" title="Ночная тема">dark_mode</span>
+              </ng-template>
+            </button>
+
+            <div class="font-size-controls">
+              <button class="font-size-button" (click)="decreaseFontSize()">A-</button>
+              <button class="font-size-button" (click)="increaseFontSize()">A+</button>
+            </div>
+          </div>
+
+          <div class="user-info">
+            <span class="user-name">Абитуриент: {{ userName }}</span>
+          </div>
+
+          <div class="dropdown"
+            (mouseenter)="hoveringMenu = true"
+            (mouseleave)="hoveringMenu = false">
+          <span class="dropbtn gear-icon" (click)="toggleMenu()">
+            {{ hoveringMenu ? '🛠️' : '⚙️' }}
+          </span>
+            <div class="dropdown-content" [ngClass]="{'show': menuOpen}">
+              <a routerLink="/dashboard" routerLinkActive="active">Профиль</a>
+              <a routerLink="/test/list" routerLinkActive="active">Тесты</a>
+              <a routerLink="/universities" routerLinkActive="active">Универы</a>
+              <a routerLink="/profession/list" routerLinkActive="active">Профессии</a>
+              <a routerLink="/categories" routerLinkActive="active">Категории</a>
+              <a *ngIf="isAdmin" routerLink="/category/create" routerLinkActive="active">Создать категорию</a>
+              <a *ngIf="isAdmin" routerLink="/test/create" routerLinkActive="active">Создать тест</a>
+              <a *ngIf="isAdmin" routerLink="/universities/create" routerLinkActive="active">Создать университет</a>
+              <a *ngIf="isAdmin" routerLink="/profession/create" routerLinkActive="active">Создать профессию</a>
+              <a *ngIf="isAdmin" routerLink="/profession/bulk-upload" routerLinkActive="active">Создать массовую профессию</a>
+              <a (click)="logout()">Выход</a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</nav>

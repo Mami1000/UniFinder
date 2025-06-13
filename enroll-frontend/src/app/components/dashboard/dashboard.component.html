@@ -1,0 +1,54 @@
+<div class="profile-form-container">
+  <!-- Блок загрузки аватара -->
+  <div class="avatar-section">
+    <div class="avatar-wrapper">
+      <ng-container *ngIf="previewPhoto; else defaultAvatar">
+        <img [src]="previewPhoto" alt="User Avatar">
+      </ng-container>
+      <ng-template #defaultAvatar>
+        <mat-icon class="default-avatar">account_circle</mat-icon>
+      </ng-template>
+      <div class="avatar-overlay">
+        <input type="file" accept="image/jpeg,image/png" hidden (change)="onFileSelected($event)" #avatarInput>
+        <button mat-mini-fab color="accent" (click)="avatarInput.click()">
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Форма редактирования профиля -->
+  <form [formGroup]="profileForm">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Имя</mat-label>
+      <input matInput formControlName="name">
+      <mat-error *ngIf="profileForm.get('name')?.hasError('required')">
+        Обязательное поле
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Новый пароль</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+      <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" [attr.aria-label]="'Переключить видимость пароля'">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-hint>Минимум 6 символов</mat-hint>
+    </mat-form-field>
+    
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" (click)="onSaveProfile()" [disabled]="isProcessing">
+        Обновить профиль
+      </button>
+    </div>
+  </form>
+
+  <div class="notification" *ngIf="message">{{ message }}</div>
+</div>

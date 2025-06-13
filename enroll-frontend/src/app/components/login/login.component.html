@@ -1,0 +1,40 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Вход</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" class="login-input">
+          <mat-label>Почта или Номер</mat-label>
+          <input matInput type="text" autocomplete="username" formControlName="login">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="login-input">
+          <mat-label>Пароль</mat-label>
+          <!-- Используем привязку [type] для переключения между 'password' и 'text' -->
+          <input matInput [type]="hidePassword ? 'password' : 'text'" autocomplete="current-password" formControlName="password">
+          <!-- Иконка, по клику на которую переключается состояние видимости -->
+          <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" class="login-button">
+          Войти
+        </button>
+      </form>
+      <!-- Дополнительные ссылки для перехода к восстановлению пароля и регистрации -->
+      <div class="additional-links" style="text-align: center; margin-top: 16px;">
+        <a (click)="redirectToForgotPassword()" style="cursor: pointer; color: #3f51b5;">
+          Забыли пароль?
+        </a>
+        <span style="margin: 0 8px; color: #000;">|</span>
+        <a (click)="redirectToRegister()" style="cursor: pointer; color: #3f51b5;">
+          Регистрация
+        </a>
+      </div>
+    </mat-card-content>
+    <mat-card-footer *ngIf="message">
+      <p class="error-message">{{ message }}</p>
+    </mat-card-footer>
+  </mat-card>
+</div>

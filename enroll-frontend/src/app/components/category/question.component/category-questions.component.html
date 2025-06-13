@@ -1,0 +1,96 @@
+<div class="category-questions-container">
+  <h2 appMathJax>Вопросы для категории: {{ categoryName }}</h2>
+
+  <div *ngIf="loading" class="loading">Загрузка вопросов…</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && questions.length; else noQuestions" class="questions-grid">
+    <div *ngFor="let q of questions" class="question-card">
+      
+      <!-- Кнопки действий -->
+      <div class="question-actions" *ngIf="isAdmin">
+        <button (click)="editQuestion(q)" title="Редактировать" class="action-btn edit">✏️</button>
+        <button (click)="deleteQuestion(q.id!)" title="Удалить" class="action-btn delete">🗑️</button>
+      </div>
+
+      <!-- Режим редактирования -->
+      <div *ngIf="editQuestionId === q.id; else showQuestion" class="edit-form">
+        <label>
+          <span>Текст вопроса:</span>
+          <input
+            type="text"
+            [(ngModel)]="editedQuestion.text"
+            placeholder="Введите текст вопроса"
+            class="edit-input"
+          />
+        </label>
+
+        <label>
+          <span>Баллы:</span>
+          <input
+            type="number"
+            [(ngModel)]="editedQuestion.point"
+            placeholder="Укажите баллы"
+            class="edit-input"
+          />
+        </label>
+
+        <label>
+          <span>Изображение:</span>
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            class="edit-input edit-image-input"
+            accept="image/png, image/jpeg, image/jpg, image/webp"
+          />
+        </label>
+
+        <!-- Предпросмотр нового изображения -->
+        <div *ngIf="editedImage && previewImageUrl" class="image-preview">
+          <img [src]="previewImageUrl" alt="Предварительный просмотр" />
+        </div>
+
+        <div class="edit-actions">
+          <button (click)="saveEditedQuestion()" class="btn-save">💾 Сохранить</button>
+          <button (click)="cancelEdit()" class="btn-cancel">❌ Отмена</button>
+        </div>
+      </div>
+
+      <!-- Отображение вопроса -->
+      <ng-template #showQuestion>
+        <p class="question-text" appMathJax>
+          <span class="label">Вопрос:</span> {{ getQuestionParts(q.text)[0] }}
+        </p>
+
+        <!-- Варианты ответа -->
+        <ul class="answer-options" *ngIf="getQuestionParts(q.text)[1].length > 0" appMathJax>
+          <li *ngFor="let option of getQuestionParts(q.text)[1]" class="answer-option">
+            {{ option }}
+          </li>
+        </ul>
+
+        <!-- Картинка -->
+        <div class="question-image-container" *ngIf="q.imageUrl">
+          <img [src]="getFullImageUrl(q.imageUrl)" alt="Изображение вопроса" />
+          <button
+            *ngIf="isAdmin"
+            (click)="deleteImage(q.id!)"
+            class="btn-delete-image"
+            title="Удалить изображение"
+          >
+            ❌ Удалить фото
+          </button>
+        </div>
+
+        <!-- Баллы -->
+        <p class="question-item" *ngIf="q.point">
+          <span class="label">Бал за вопрос:</span> {{ q.point }}
+        </p>
+      </ng-template>
+    </div>
+  </div>
+
+  <ng-template #noQuestions>
+    <div class="no-questions">Нет вопросов для этой категории.</div>
+  </ng-template>
+</div>

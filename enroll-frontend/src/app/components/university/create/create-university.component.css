@@ -1,0 +1,135 @@
+.create-university-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 2rem 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.card h1 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #333333;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+  border-color: #6b73ff;
+  outline: none;
+}
+
+.file-input-group input[type="file"] {
+  margin-top: 0.5rem;
+}
+
+.file-input-label {
+  cursor: pointer;
+  font-weight: 600;
+  color: #555;
+}
+
+.logo-preview {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.logo-preview img {
+  max-width: 150px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.course-list .course-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.remove-course-btn {
+  background: #ff6b6b;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.remove-course-btn:hover {
+  background: #ff4d4d;
+}
+
+.course-add {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-course-btn {
+  background: #6b73ff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-course-btn:hover {
+  background: #5750f0;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  background: #000dff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #3333ff;
+}
+
+.submit-btn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}

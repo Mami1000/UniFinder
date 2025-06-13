@@ -1,0 +1,91 @@
+/* Global style.css */
+
+/* Применяем box-sizing ко всем элементам */
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* Настройки для html и body */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;  /* Отключаем горизонтальную прокрутку */
+  box-sizing: border-box;
+
+  /* Фон задаётся через переменные */
+  background: var(--background-gradient), var(--background-image);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Определяем переменные для светлой темы */
+:root {
+  --base-font-size: 16px; /* Базовый размер шрифта */
+
+
+  /* Фоновые переменные для светлой темы */
+  --background-gradient: linear-gradient(135deg, rgba(28, 28, 29, 0.8), rgba(145, 97, 194, 0.8));
+  --background-image: url('https://source.unsplash.com/random/1920x1080?abstract');
+
+  /* Переменные для элементов навбара и прочих компонентов */
+  --nav-background: #3f51b5;
+  --nav-text-color: white;
+  --dropdown-bg: #f9f9f9;
+  --dropdown-text: black;
+  --dropdown-hover-bg: #f1f1f1;
+}
+
+/* Устанавливаем базовый размер шрифта для всего документа */
+html {
+  font-size: var(--base-font-size);
+}
+
+/* Гарантируем, что все текстовые элементы будут масштабироваться */
+body,
+h1, h2, h3, h4, h5, h6,
+p,
+span,
+a,
+li,
+input,
+button,
+textarea {
+  font-size: 1rem;  
+}
+
+/* Переопределяем переменные для тёмного режима (например, для переключения темы) */
+.dark-mode {
+  --background-gradient: linear-gradient(135deg, #000, #333);
+  --background-image: url('https://source.unsplash.com/random/1920x1080?abstract');
+  --nav-background: #222;
+  --nav-text-color: #eee;
+  --dropdown-bg: #333;
+  --dropdown-text: #eee;
+  --dropdown-hover-bg: #444;
+}
+
+
+/* При необходимости можно задать дополнительные универсальные стили для всех заголовков и ссылок */
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+body .goog-te-banner-frame.skiptranslate {
+  position: fixed !important;
+  bottom: 0px !important;
+  top: auto !important;
+  width: 100% !important;
+  z-index: 999999 !important;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+body {
+  top: 0px !important;
+}
+/* // Применяем стили для навигационной панели */
+.nav-bar,
+.nav-bar * {
+  font-size: 14px !important; 
+}
