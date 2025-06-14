@@ -37,8 +37,8 @@ namespace Enroll.Extensions
             services.AddScoped<IUniversityReaderService, UniversityService>();// UniversityService for reading universities
             services.AddScoped<IUniversityWriterService, UniversityService>();// UniversityService for handling universities
             services.AddScoped<ITestService, TestService>();// TestService for handling tests
-            services.AddSingleton<ICategoryServices, CategoryServices>();// CategoryServices for handling categories
-            services.AddSingleton<IQuestionServices, QuestionServices>();// QuestionServices for handling questions
+            services.AddScoped<ICategoryServices, CategoryServices>();
+           services.AddScoped<IQuestionServices, QuestionServices>();// QuestionServices for handling questions
             services.AddScoped<IProfessionService, ProfessionService>();// ProfessionService for handling professions
             services.AddScoped<IRecommendationService, RecommendationService>();// RecommendationService for handling recommendations
             services.AddSingleton(database.GetCollection<UserProfile>("UserProfiles"));// UserProfile collection for user profiles
