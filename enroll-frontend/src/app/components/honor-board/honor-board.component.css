@@ -1,7 +1,5 @@
 /*  Основной контейнер доски почёта */
 .honor-board-container {
-  position: fixed;
-  bottom: 1.25rem;
   left: 1.25rem;
   width: 28rem; 
   max-width: min(28rem, 90vw); 
