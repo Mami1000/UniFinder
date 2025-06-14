@@ -67,7 +67,6 @@ namespace Enroll.Controllers
                 return StatusCode(500, new { message = "Ошибка регистрации", details = ex.Message });
             }
         }
-        [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
